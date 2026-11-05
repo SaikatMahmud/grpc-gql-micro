@@ -1,6 +1,34 @@
 package main
 
+import (
+	"log"
+	"net/http"
+
+	"github.com/99designs/gqlgen/graphql/handler"
+	"github.com/99designs/gqlgen/graphql/playground"
+	"github.com/kelseyhightower/envconfig"
+)
+
+type AppConfig struct {
+	AccountURL string `envconfig:"ACCOUNT_SERVICE_URL" default:"http://localhost:50051"`
+	CatalogURL string `envconfig:"CATALOG_SERVICE_URL" default:"http://localhost:50052"`
+	OrderURL   string `envconfig:"ORDER_SERVICE_URL" default:"http://localhost:50053"`
+}
+
 func main() {
-	// This is the entry point of the application.
-	// You can initialize your GraphQL server here.
+	var cfg AppConfig
+	err := envconfig.Process("", &cfg)
+	if err != nil {
+		log.Fatalf("Failed to process environment variables: %v", err)
+	}
+
+	s, err := NewGraphQLServer(cfg.AccountURL, cfg.CatalogURL, cfg.OrderURL)
+	if err != nil {
+		log.Fatalf("Failed to create GraphQL server: %v", err)
+	}
+
+	http.Handle("/graphql", handler.New(s.ToExecutableSchema()))
+	http.Handle("/playground", playground.Handler("GraphQL Playground", "/graphql"))
+
+	log.Fatal(http.ListenAndServe(":8080", nil))
 }
