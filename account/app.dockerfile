@@ -1,0 +1,14 @@
+FROM golang:1.27-alpine AS build
+RUN apk add --no-cache ca-certificates
+WORKDIR /src
+COPY go.mod go.sum ./
+RUN go mod download
+COPY account account
+RUN go build -o /out/app ./account/cmd/account
+
+FROM alpine:3.22
+RUN apk add --no-cache ca-certificates
+WORKDIR /usr/bin
+COPY --from=build /out/app ./app
+EXPOSE 8080
+CMD ["app"]
