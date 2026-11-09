@@ -14,15 +14,15 @@ type Config struct {
 }
 
 func main() {
-	var cgf Config
-	err := envconfig.Process("", &cgf)
+	var cfg Config
+	err := envconfig.Process("", &cfg)
 	if err != nil {
 		log.Fatal(err)
 	}
 
 	var r account.Repository
 	retry.ForeverSleep(2*time.Second, func(_ int) (err error) {
-		r, err = account.NewPostgresRepository(cgf.DatabaseURL)
+		r, err = account.NewPostgresRepository(cfg.DatabaseURL)
 
 		if err != nil {
 			log.Println(err)
@@ -34,5 +34,5 @@ func main() {
 	log.Println("Listening on :8080")
 
 	s := account.NewService(r)
-	log.Fatal(account.ListernGRPC(s, 8080))
+	log.Fatal(account.ListenGRPC(s, 8080))
 }
