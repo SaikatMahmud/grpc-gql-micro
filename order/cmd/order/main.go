@@ -23,7 +23,7 @@ func main() {
 	}
 
 	var r order.Repository
-	retry.ForeverSleep(2*time.Second, func(_, int) (err error) {
+	retry.ForeverSleep(2*time.Second, func(_ int) (err error) {
 		r, err = order.NewPostgresRepository(cfg.DatabaseURL)
 		if err != nil {
 			log.Println(err)

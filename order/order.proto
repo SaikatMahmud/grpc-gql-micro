@@ -7,13 +7,14 @@ message Order {
     message OrderProduct {
         string id = 1;
         string description = 2;
-        int32 quantity = 3;
+        uint32 quantity = 3;
         double price = 4;
     }
 
     string id = 1;
     bytes createdAt = 2;
     string accountId = 3;
+    double totalAmount = 5;
     repeated OrderProduct products = 4;
 }
 

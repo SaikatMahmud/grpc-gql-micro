@@ -5,7 +5,6 @@ go 1.27.3
 require (
 	github.com/99designs/gqlgen v0.17.98
 	github.com/kelseyhightower/envconfig v1.4.0
-	github.com/lib/pq v1.12.3
 	github.com/olivere/elastic/v7 v7.0.32
 	github.com/segmentio/ksuid v1.0.4
 	github.com/tinrab/retry v1.0.0

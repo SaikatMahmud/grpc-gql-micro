@@ -45,7 +45,7 @@ func (r *postgresRepository) PutOrder(ctx context.Context, order Order) (err err
 		}
 		err = tx.Commit()
 	}()
-	tx.ExecContext(
+	_, err = tx.ExecContext(
 		ctx,
 		"INSERT INTO orders (id, account_id, total_amount, created_at) VALUES ($1, $2, $3, $4)",
 		order.ID, order.AccountID, order.TotalAmount, order.CreatedAt)
@@ -98,8 +98,8 @@ func (r *postgresRepository) GetOrdersForAccount(ctx context.Context, accountID 
 		if err := rows.Scan(
 			&order.ID,
 			&order.AccountID,
-			&order.CreatedAt,
 			&order.TotalAmount,
+			&order.CreatedAt,
 			&orderedProduct.ID,
 			&orderedProduct.Quantity,
 			&orderedProduct.Price,

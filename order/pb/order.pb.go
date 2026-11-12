@@ -27,6 +27,7 @@ type Order struct {
 	Id            string                 `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
 	CreatedAt     []byte                 `protobuf:"bytes,2,opt,name=createdAt,proto3" json:"createdAt,omitempty"`
 	AccountId     string                 `protobuf:"bytes,3,opt,name=accountId,proto3" json:"accountId,omitempty"`
+	TotalAmount   float64                `protobuf:"fixed64,5,opt,name=totalAmount,proto3" json:"totalAmount,omitempty"`
 	Products      []*Order_OrderProduct  `protobuf:"bytes,4,rep,name=products,proto3" json:"products,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
@@ -81,6 +82,13 @@ func (x *Order) GetAccountId() string {
 		return x.AccountId
 	}
 	return ""
+}
+
+func (x *Order) GetTotalAmount() float64 {
+	if x != nil {
+		return x.TotalAmount
+	}
+	return 0
 }
 
 func (x *Order) GetProducts() []*Order_OrderProduct {
@@ -366,7 +374,7 @@ type Order_OrderProduct struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Id            string                 `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
 	Description   string                 `protobuf:"bytes,2,opt,name=description,proto3" json:"description,omitempty"`
-	Quantity      int32                  `protobuf:"varint,3,opt,name=quantity,proto3" json:"quantity,omitempty"`
+	Quantity      uint32                 `protobuf:"varint,3,opt,name=quantity,proto3" json:"quantity,omitempty"`
 	Price         float64                `protobuf:"fixed64,4,opt,name=price,proto3" json:"price,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
@@ -416,7 +424,7 @@ func (x *Order_OrderProduct) GetDescription() string {
 	return ""
 }
 
-func (x *Order_OrderProduct) GetQuantity() int32 {
+func (x *Order_OrderProduct) GetQuantity() uint32 {
 	if x != nil {
 		return x.Quantity
 	}
@@ -486,16 +494,17 @@ var File_order_proto protoreflect.FileDescriptor
 
 const file_order_proto_rawDesc = "" +
 	"\n" +
-	"\vorder.proto\x12\x02pb\"\xfb\x01\n" +
+	"\vorder.proto\x12\x02pb\"\x9d\x02\n" +
 	"\x05Order\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\tR\x02id\x12\x1c\n" +
 	"\tcreatedAt\x18\x02 \x01(\fR\tcreatedAt\x12\x1c\n" +
-	"\taccountId\x18\x03 \x01(\tR\taccountId\x122\n" +
+	"\taccountId\x18\x03 \x01(\tR\taccountId\x12 \n" +
+	"\vtotalAmount\x18\x05 \x01(\x01R\vtotalAmount\x122\n" +
 	"\bproducts\x18\x04 \x03(\v2\x16.pb.Order.OrderProductR\bproducts\x1ar\n" +
 	"\fOrderProduct\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\tR\x02id\x12 \n" +
 	"\vdescription\x18\x02 \x01(\tR\vdescription\x12\x1a\n" +
-	"\bquantity\x18\x03 \x01(\x05R\bquantity\x12\x14\n" +
+	"\bquantity\x18\x03 \x01(\rR\bquantity\x12\x14\n" +
 	"\x05price\x18\x04 \x01(\x01R\x05price\"\xb9\x01\n" +
 	"\x10PostOrderRequest\x12\x1c\n" +
 	"\taccountId\x18\x02 \x01(\tR\taccountId\x12=\n" +
