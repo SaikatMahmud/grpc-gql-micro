@@ -50,10 +50,10 @@ type ComplexityRoot struct {
 	}
 
 	Order struct {
-		CreatedAt  func(childComplexity int) int
-		ID         func(childComplexity int) int
-		Products   func(childComplexity int) int
-		TotalPrice func(childComplexity int) int
+		CreatedAt   func(childComplexity int) int
+		ID          func(childComplexity int) int
+		Products    func(childComplexity int) int
+		TotalAmount func(childComplexity int) int
 	}
 
 	OrderedProduct struct {
@@ -183,12 +183,12 @@ func (e *executableSchema) Complexity(ctx context.Context, typeName, field strin
 		}
 
 		return e.ComplexityRoot.Order.Products(childComplexity), true
-	case "Order.totalPrice":
-		if e.ComplexityRoot.Order.TotalPrice == nil {
+	case "Order.totalAmount":
+		if e.ComplexityRoot.Order.TotalAmount == nil {
 			break
 		}
 
-		return e.ComplexityRoot.Order.TotalPrice(childComplexity), true
+		return e.ComplexityRoot.Order.TotalAmount(childComplexity), true
 
 	case "OrderedProduct.description":
 		if e.ComplexityRoot.OrderedProduct.Description == nil {
@@ -397,8 +397,8 @@ func (ec *executionContext) childFields_Order(ctx context.Context, field graphql
 		return ec.fieldContext_Order_id(ctx, field)
 	case "createdAt":
 		return ec.fieldContext_Order_createdAt(ctx, field)
-	case "totalPrice":
-		return ec.fieldContext_Order_totalPrice(ctx, field)
+	case "totalAmount":
+		return ec.fieldContext_Order_totalAmount(ctx, field)
 	case "products":
 		return ec.fieldContext_Order_products(ctx, field)
 	}
@@ -989,16 +989,16 @@ func (ec *executionContext) fieldContext_Order_createdAt(_ context.Context, fiel
 	return graphql.NewScalarFieldContext("Order", field, false, false, "Time")
 }
 
-func (ec *executionContext) _Order_totalPrice(ctx context.Context, field graphql.CollectedField, obj *Order) (ret graphql.Marshaler) {
+func (ec *executionContext) _Order_totalAmount(ctx context.Context, field graphql.CollectedField, obj *Order) (ret graphql.Marshaler) {
 	return graphql.ResolveField(
 		ctx,
 		ec.OperationContext,
 		field,
 		func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
-			return ec.fieldContext_Order_totalPrice(ctx, field)
+			return ec.fieldContext_Order_totalAmount(ctx, field)
 		},
 		func(ctx context.Context) (any, error) {
-			return obj.TotalPrice, nil
+			return obj.TotalAmount, nil
 		},
 		nil,
 		func(ctx context.Context, selections ast.SelectionSet, v float64) graphql.Marshaler {
@@ -1008,7 +1008,7 @@ func (ec *executionContext) _Order_totalPrice(ctx context.Context, field graphql
 		true,
 	)
 }
-func (ec *executionContext) fieldContext_Order_totalPrice(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+func (ec *executionContext) fieldContext_Order_totalAmount(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
 	return graphql.NewScalarFieldContext("Order", field, false, false, "Float")
 }
 
@@ -2863,8 +2863,8 @@ func (ec *executionContext) _Order(ctx context.Context, sel ast.SelectionSet, ob
 			if out.Values[i] == graphql.Null {
 				out.Invalids++
 			}
-		case "totalPrice":
-			out.Values[i] = ec._Order_totalPrice(ctx, field, obj)
+		case "totalAmount":
+			out.Values[i] = ec._Order_totalAmount(ctx, field, obj)
 			if out.Values[i] == graphql.Null {
 				out.Invalids++
 			}
